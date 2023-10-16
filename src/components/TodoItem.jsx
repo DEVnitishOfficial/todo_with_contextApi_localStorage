@@ -1,0 +1,58 @@
+import React, { useState } from 'react'
+import { useTodo } from '../contexts'
+
+function TodoItem({ IndividualTodo }) {
+  console.log('todoItem todo',IndividualTodo)
+
+    const [isEditable, setIsEditable] = useState(false)
+    const [todoMsg, setTodoMsg] = useState(IndividualTodo.todo)
+    const {updateTodo,deleteTodo,toggleStatus} = useTodo()
+
+    const editTodo = () => {
+      updateTodo(IndividualTodo.id, {...IndividualTodo, todokey : todoMsg});
+      setIsEditable(false)
+    }
+
+    const toggleCompleted = () => {
+      toggleStatus(IndividualTodo.id)
+    }
+
+
+
+
+  return (
+    <div className="bg-slate-800 w-80 px-10 py-10   text-white">
+      <input
+                type="checkbox"
+                className="cursor-pointer"
+                checked={IndividualTodo.status}
+                onChange={toggleCompleted}
+            />
+      <p className={`text-xl ${isEditable ? "Status : Pending" : "Status : Completed"}`}></p>
+           <input className={`bg-transparent outline-none m-5 p-1 ${
+                    isEditable ? "border-black/10 px-2" : "border-transparent"
+                }`}
+            type="text"
+            value={todoMsg}
+            onChange={ (e) => setTodoMsg(e.target.value)}
+            readOnly = {!isEditable}
+          />
+          <button className="bg-blue-800 rounded-lg py-2 px-5 w-full mb-4 "
+           onClick={ () => {
+            if(IndividualTodo.status) return
+            if(isEditable){
+              editTodo()
+            }else(setIsEditable((prevStatus) => !prevStatus ))
+           }}>
+            {isEditable ? "Save" : "Update Status"}
+            </button>
+
+            <button className="bg-blue-800 rounded-lg py-2 px-5 w-full mb-4 "
+           onClick={ () => deleteTodo(IndividualTodo.id)}>
+           Remove
+            </button>
+        </div>
+  )
+}
+
+export default TodoItem
