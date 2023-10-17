@@ -9,9 +9,12 @@ import TodoItem from './components/TodoItem';
 function App() {
 
   const [todos, setTodos] = useState([]);
+  const [counter,setCounter] = useState(1)
 
   const addTodo = (todo) => {
-    setTodos((oldTodos) => [...oldTodos,{...todo}] )
+    setTodos((oldTodos) => [...oldTodos,{...todo, todokey: `${counter}. ${todo.todokey}`}])
+    setCounter((prevCounter) => prevCounter + 1);
+    console.log('see your todo',todo)
   }
 
   const updateTodo = (id, currentTodo) => {
@@ -58,7 +61,7 @@ function App() {
         {todos.map((todo) => (
               <div key={todo.id}
               className='ml-24 mr-1'
-              >
+              >                
                 <TodoItem IndividualTodo={todo} />
               </div>
             ))}
